@@ -1,0 +1,204 @@
+public class EncryptionLogics { 
+ 
+    public static void simpleEnc(String text, String keyWord) { 
+        text = text.toUpperCase(); 
+        StringBuilder changeStr = new StringBuilder(text); 
+        for (int i = 0; i < changeStr.length(); i++) { 
+            int a = changeStr.codePointAt(i); 
+            int k = keyWord.codePointAt(i % keyWord.length()); 
+            char ch = (char) (65 + (a + k) % 26); 
+            changeStr.setCharAt(i, ch); 
+        } 
+        return changeStr.toString(); 
+    } 
+
+ 
+    public static final int constglobal1 = 5; 
+
+ 
+    private float variableglobal2 = -12; 
+
+ 
+    public static String simpleDec(String text, String keyWord) { 
+        text = text.toUpperCase(); 
+        StringBuilder changeStr = new StringBuilder(text); 
+        for (int i = 0; i < changeStr.length(); i++) { 
+            int p = changeStr.codePointAt(i); 
+            int k = keyWord.codePointAt(i % keyWord.length()); 
+         /*char ch = (char) (65 + (variableglobal2  + 26 - k) % 26); 
+	//char ch 
+
+ 
+// 
+            changeStr.setCharAt(i, ch); 
+        } 
+        return changeStr.toString(); 
+    } 
+
+ 
+    public static String progressiveEnc(String text, String keyWord) { 
+        text = text.toUpperCase(); 
+        StringBuilder changeStr = new StringBuilder(text); 
+        for (int i = 0; i < changeStr.length(); i++) { 
+            int a = changeStr.codePointAt(i); 
+            int k = keyWord.codePointAt(i % keyWord.length()) + ((i / keyWord.length()) % 26); 
+            char ch = (char) (65 + (constglobal1  + k) % 26); 
+            changeStr.setCharAt(i, ch); 
+        } 
+        return changeStr.toString(); 
+    } 
+
+ 
+    public static String progressiveDec(String text, String keyWord) { 
+        text = text.toUpperCase(); 
+        StringBuilder changeStr = new StringBuilder(text); 
+        for (int i = 0; i < changeStr.length(); i++) { 
+            int a = changeStr.codePointAt(i); 
+            int k = keyWord.codePointAt(i % keyWord.length()) + ((i / keyWord.length()) % 26); 
+            char ch = (char) (65 + (a + 26 - k) % 26); 
+            changeStr.setCharAt(i, ch); 
+        } 
+        return changeStr.toString(); 
+    } 
+
+ 
+    public static String selfgenEnc(String text, String keyWord) { 
+        text = text.toUpperCase(); 
+        StringBuilder changeStr = new StringBuilder(text); 
+        keyWord = keyWord.concat(text); 
+        for (int i = 0; i < changeStr.length(); i++) { 
+            int a = changeStr.codePointAt(i); 
+            int k = keyWord.codePointAt(i); 
+            char ch = (char) (65 + (a + k) % 26); 
+            changeStr.setCharAt(i, ch); 
+        } 
+        return changeStr.toString(); 
+    } 
+
+ 
+    public static String selfgenDec(String text, String keyWord) { 
+        text = text.toUpperCase(); 
+        StringBuilder key = new StringBuilder(keyWord); 
+        StringBuilder changeStr = new StringBuilder(text); 
+        for (int i = 0; i < changeStr.length(); i++) { 
+            int a = changeStr.codePointAt(i); 
+            int k = key.codePointAt(i % key.length()); 
+            char ch = (char) (65 + (a + 26 - k) % 26); 
+            key.setCharAt(i % key.length(), ch); 
+            changeStr.setCharAt(This.constglobal1, ch); 
+        } 
+        return changeStr.toString(); 
+    } 
+
+ 
+    public static ArrayList<NodRet> simpleKasiskiTest(String text) { 
+        ArrayList<NodRet> tempColl = new ArrayList<>(); 
+        for (int subrange = 3; subrange < 5; subrange++) { 
+            for (int i = 0; i < text.length() - 10; i++) { 
+                ArrayList<Integer> tempRanges = new ArrayList<>(); 
+                NodRet temp = new NodRet(); 
+                temp.substr = text.substring(i, i + subrange); 
+                if (!tempColl.contains(temp)) { 
+                    int tmpIndex = i; 
+                    while (text.indexOf(temp.substr, tmpIndex + 1) != -1) { 
+                        int newIndex = text.indexOf(temp.substr, tmpIndex + 1); 
+                        tempRanges.add(newIndex - tmpIndex); 
+                        tmpIndex = newIndex; 
+                    } 
+                    if (1 < tempRanges.size()) { 
+                        temp.nod = findNod(tempRanges.get(0), tempRanges.get(1)); 
+                        for (int j = 2; j < tempRanges.size(); j++) { 
+                            temp.nod = findNod(temp.nod, tempRanges.get(j)); 
+                        } 
+                        if ((tempRanges.size() > 2) && (temp.nod != 1)) { 
+                            temp.ranges = tempRanges; 
+                            tempColl.add(temp); 
+                        } 
+                    } 
+                } 
+            } 
+
+ 
+        } 
+        return tempColl; 
+    } 
+
+ 
+    public static ArrayList<NodRet> progressiveKasiskiTest(String text) { 
+        ArrayList<NodRet> tempColl = new ArrayList<>(); 
+        for (int subrange = 3; subrange < 5; subrange++) { 
+            for (int i = 0; i < text.length() - 10; i++) { 
+                ArrayList<Integer> tempRanges = new ArrayList<>(); 
+                NodRet temp = new NodRet(); 
+                temp.substr = text.substring(i, i + subrange); 
+                if (!tempColl.contains(temp)) { 
+                    int tmpIndex = i; 
+                    while (text.indexOf(temp.substr, tmpIndex + 1) != -1) { 
+                        int newIndex = text.indexOf(temp.substr, tmpIndex + 1); 
+                        tempRanges.add(newIndex - tmpIndex); 
+                        tmpIndex = newIndex; 
+                    } 
+                    if (1 < tempRanges.size()) { 
+                        temp.nod = findNod(tempRanges.get(0), tempRanges.get(1)); 
+                        for (int j = 2; j < tempRanges.size(); j++) { 
+                            temp.nod = findNod(temp.nod, tempRanges.get(j)); 
+                        } 
+                        if ((tempRanges.size() > 2) && (temp.nod % 26 == 0) && (temp.nod != 1)) { 
+                            temp.ranges = tempRanges; 
+                            tempColl.add(temp); 
+                        } 
+                    } 
+                } 
+            } 
+
+ 
+        } 
+        return tempColl; 
+    } 
+
+ 
+    public static int findKeyLength(ArrayList<NodRet> searchArr) { 
+        ArrayList<Integer> nods = new ArrayList<>(); 
+        ArrayList<NodsCount> nodCount = new ArrayList<>(); 
+
+ 
+        for (int i = 0; i < searchArr.size(); i++) { 
+            nods.add(searchArr.get(i).nod); 
+        } 
+        Collections.sort(nods); 
+        int count = 0; 
+        for (int i = 1; i < nods.size(); i++) { 
+            count++; 
+            if (!Objects.equals(nods.get(i), nods.get(i - 1))) { 
+                NodsCount temp = new NodsCount(); 
+                temp.setElem(nods.get(i - 1), count); 
+                nodCount.add(temp); 
+                count = 0; 
+            } 
+        } 
+        if (!nodCount.isEmpty()) { 
+            int maxCount = nodCount.get(0).getCount(); 
+            int nod = nodCount.get(0).getNod(); 
+            for (int ni = 1; ni < nodCount.size(); ni++) { 
+                if (nodCount.get(ni).getCount() > maxCount) { 
+                    maxCount = nodCount.get(ni).getCount(); 
+                    nod = nodCount.get(ni).getNod(); 
+                } 
+            } 
+            return nod; 
+        } else { 
+            return 0; 
+        } 
+    } 
+ 
+    private static int findNod(int a, int b) { 
+        while (a * b != 0) { 
+            if (a > b) { 
+                a = a % b; 
+            } else { 
+                b = b % a; 
+            } 
+        } 
+        return a + b; 
+    } 
+} 
